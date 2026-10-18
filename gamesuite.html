@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sky Catch</title>
+    <style>
+      :root {
+        --bg-1: #091426;
+        --bg-2: #122847;
+        --panel: rgba(13, 25, 44, 0.78);
+        --panel-border: rgba(162, 186, 255, 0.3);
+        --text: #edf4ff;
+        --muted: #a7bde8;
+        --accent: #84d5ff;
+        --accent-2: #7ef7bf;
+        --danger: #ff736c;
+        --gold: #ffd166;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at top, #1d3d70 0%, var(--bg-2) 28%, var(--bg-1) 100%);
+        color: var(--text);
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .game-shell {
+        width: min(92vw, 760px);
+        background: var(--panel);
+        border: 1px solid var(--panel-border);
+        border-radius: 24px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(10px);
+        padding: 22px 20px 18px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 8px 12px;
+        border: 1px solid rgba(126, 247, 191, 0.5);
+        background: rgba(126, 247, 191, 0.12);
+        color: var(--accent-2);
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+
+      .hud {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .stat {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(167, 189, 232, 0.2);
+      }
+
+      .label {
+        display: block;
+        color: var(--muted);
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        margin-bottom: 5px;
+      }
+
+      .value {
+        font-size: clamp(1.3rem, 2vw, 2rem);
+        font-weight: 800;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: linear-gradient(180deg, rgba(10, 30, 54, 0.8), rgba(12, 20, 34, 0.92));
+        border: 1px solid rgba(167, 189, 232, 0.2);
+        border-radius: 18px;
+        box-shadow: inset 0 0 30px rgba(132, 213, 255, 0.08);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      button {
+        appearance: none;
+        border: none;
+        border-radius: 12px;
+        padding: 0.9rem 1.4rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      #startBtn {
+        background: linear-gradient(135deg, var(--accent), #77a8ff);
+        color: #071b2d;
+        box-shadow: 0 10px 20px rgba(132, 213, 255, 0.3);
+      }
+
+      #resetBtn {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        border: 1px solid rgba(167, 189, 232, 0.25);
+      }
+
+      .help {
+        text-align: center;
+        color: var(--muted);
+        margin-top: 14px;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 640px) {
+        .game-shell {
+          padding: 18px 14px 16px;
+        }
+
+        .hud {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="game-shell">
+      <div class="topbar">
+        <h1>Sky Catch</h1>
+        <span class="badge">Arcade</span>
+      </div>
+
+      <div class="hud" aria-live="polite">
+        <div class="stat">
+          <span class="label">Score</span>
+          <span class="value" id="score">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Best</span>
+          <span class="value" id="best">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Time</span>
+          <span class="value" id="time">45</span>
+        </div>
+        <div class="stat">
+          <span class="label">Lives</span>
+          <span class="value" id="lives">3</span>
+        </div>
+      </div>
+
+      <canvas id="gameCanvas" width="700" height="420" aria-label="Sky Catch game area"></canvas>
+
+      <div class="controls">
+        <button id="startBtn" type="button">Start Game</button>
+        <button id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <p class="help">Use A/D or the arrow keys to move. Catch glowing stars for points and dodge the red meteors.</p>
+    </main>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const scoreEl = document.getElementById("score");
+      const bestEl = document.getElementById("best");
+      const timeEl = document.getElementById("time");
+      const livesEl = document.getElementById("lives");
+      const startBtn = document.getElementById("startBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      const player = {
+        width: 120,
+        height: 18,
+        x: canvas.width / 2 - 60,
+        y: canvas.height - 28,
+        speed: 360,
+        moveLeft: false,
+        moveRight: false,
+      };
+
+      const state = {
+        running: false,
+        score: 0,
+        best: Number(localStorage.getItem("sky-catch-best") || 0),
+        timeLeft: 45,
+        lives: 3,
+        spawnTimer: 0,
+        stars: [],
+        meteors: [],
+        lastTime: 0,
+        flash: 0,
+      };
+
+      function updateHud() {
+        scoreEl.textContent = String(state.score);
+        bestEl.textContent = String(state.best);
+        timeEl.textContent = String(Math.ceil(state.timeLeft));
+        livesEl.textContent = String(state.lives);
+      }
+
+      function resetState() {
+        state.running = false;
+        state.score = 0;
+        state.timeLeft = 45;
+        state.lives = 3;
+        state.spawnTimer = 0;
+        state.stars = [];
+        state.meteors = [];
+        state.flash = 0;
+        player.x = canvas.width / 2 - player.width / 2;
+        updateHud();
+      }
+
+      function startGame() {
+        resetState();
+        state.running = true;
+        startBtn.textContent = "Playing...";
+        startBtn.disabled = true;
+      }
+
+      function endGame() {
+        state.running = false;
+        state.best = Math.max(state.best, state.score);
+        localStorage.setItem("sky-catch-best", String(state.best));
+        bestEl.textContent = String(state.best);
+        startBtn.textContent = "Play Again";
+        startBtn.disabled = false;
+      }
+
+      function spawnObject() {
+        const isMeteor = Math.random() < 0.32;
+        const radius = isMeteor ? 12 + Math.random() * 14 : 10 + Math.random() * 12;
+        const x = 18 + Math.random() * (canvas.width - 36);
+        const y = -radius - 10;
+        const speed = isMeteor ? 170 + Math.random() * 120 : 150 + Math.random() * 90;
+
+        const item = {
+          x,
+          y,
+          radius,
+          speed,
+          drift: (Math.random() - 0.5) * 125,
+          isMeteor,
+        };
+
+        if (isMeteor) {
+          state.meteors.push(item);
+        } else {
+          state.stars.push(item);
+        }
+      }
+
+      function handleInput(deltaTime) {
+        if (!state.running) return;
+
+        const moveX = (player.moveRight ? 1 : 0) - (player.moveLeft ? 1 : 0);
+        player.x += moveX * player.speed * deltaTime;
+        player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+      }
+
+      function checkCollisions() {
+        for (const star of state.stars) {
+          const hitX = star.x >= player.x && star.x <= player.x + player.width;
+          const hitY = star.y + star.radius >= player.y && star.y - star.radius <= player.y + player.height;
+
+          if (hitX && hitY) {
+            state.score += 10;
+            star.hit = true;
+            state.flash = 0.18;
+          }
+        }
+
+        for (const meteor of state.meteors) {
+          const hitX = meteor.x >= player.x && meteor.x <= player.x + player.width;
+          const hitY = meteor.y + meteor.radius >= player.y && meteor.y - meteor.radius <= player.y + player.height;
+
+          if (hitX && hitY) {
+            meteor.hit = true;
+            state.lives -= 1;
+            state.flash = 0.28;
+            if (state.lives <= 0) {
+              endGame();
+              return;
+            }
+          }
+        }
+
+        state.stars = state.stars.filter((star) => !star.hit && star.y < canvas.height + star.radius + 20);
+        state.meteors = state.meteors.filter((meteor) => !meteor.hit && meteor.y < canvas.height + meteor.radius + 20);
+      }
+
+      function updateObjects(deltaTime) {
+        state.stars.forEach((star) => {
+          star.y += star.speed * deltaTime;
+          star.x += star.drift * deltaTime;
+        });
+
+        state.meteors.forEach((meteor) => {
+          meteor.y += meteor.speed * deltaTime;
+          meteor.x += meteor.drift * deltaTime;
+        });
+
+        state.stars = state.stars.filter((star) => star.y < canvas.height + 24);
+        state.meteors = state.meteors.filter((meteor) => meteor.y < canvas.height + 40);
+
+        if (state.running) {
+          state.spawnTimer -= deltaTime;
+          if (state.spawnTimer <= 0) {
+            spawnObject();
+            state.spawnTimer = Math.max(0.35, 1.1 - state.score / 280);
+          }
+        }
+      }
+
+      function update(deltaTime) {
+        if (!state.running) return;
+
+        state.timeLeft -= deltaTime;
+        if (state.timeLeft <= 0) {
+          state.timeLeft = 0;
+          endGame();
+          return;
+        }
+
+        handleInput(deltaTime);
+        updateObjects(deltaTime);
+        checkCollisions();
+        state.flash = Math.max(0, state.flash - deltaTime);
+        updateHud();
+      }
+
+      function drawBackground() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        sky.addColorStop(0, "#0a1d38");
+        sky.addColorStop(1, "#101d2e");
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < 70; i += 1) {
+          const x = (i * 53) % canvas.width;
+          const y = (i * 71) % canvas.height;
+          ctx.fillStyle = "rgba(255,255,255,0.7)";
+          ctx.fillRect(x, y, 2, 2);
+        }
+
+        ctx.fillStyle = "rgba(132, 213, 255, 0.18)";
+        ctx.fillRect(0, canvas.height - 45, canvas.width, 45);
+      }
+
+      function drawPlayer() {
+        ctx.fillStyle = "#9ae6ff";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        ctx.fillStyle = "#dff8ff";
+        ctx.beginPath();
+        ctx.moveTo(player.x + 22, player.y - 12);
+        ctx.lineTo(player.x + player.width / 2, player.y - 24);
+        ctx.lineTo(player.x + player.width - 22, player.y - 12);
+        ctx.fill();
+      }
+
+      function drawStars() {
+        state.stars.forEach((star) => {
+          ctx.beginPath();
+          ctx.fillStyle = "#7ef7bf";
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(151, 255, 220, 0.7)";
+          ctx.arc(star.x - star.radius * 0.2, star.y - star.radius * 0.2, star.radius * 0.35, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        state.meteors.forEach((meteor) => {
+          ctx.beginPath();
+          ctx.fillStyle = "#ff736c";
+          ctx.moveTo(meteor.x, meteor.y - meteor.radius);
+          ctx.lineTo(meteor.x + meteor.radius * 0.8, meteor.y);
+          ctx.lineTo(meteor.x, meteor.y + meteor.radius);
+          ctx.lineTo(meteor.x - meteor.radius * 0.8, meteor.y);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(255,160,160,0.7)";
+          ctx.arc(meteor.x - meteor.radius * 0.2, meteor.y - meteor.radius * 0.2, meteor.radius * 0.3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      function drawOverlay() {
+        if (!state.running && state.score === 0 && state.lives === 3) {
+          ctx.fillStyle = "rgba(10, 28, 44, 0.38)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#edf4ff";
+          ctx.textAlign = "center";
+          ctx.font = "700 32px Segoe UI";
+          ctx.fillText("Ready to play?", canvas.width / 2, canvas.height / 2 - 10);
+          ctx.font = "500 18px Segoe UI";
+          ctx.fillStyle = "#a7bde8";
+          ctx.fillText("Press Start to begin", canvas.width / 2, canvas.height / 2 + 22);
+        }
+
+        if (!state.running && state.score > 0) {
+          ctx.fillStyle = "rgba(10, 28, 44, 0.38)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#edf4ff";
+          ctx.textAlign = "center";
+          ctx.font = "700 34px Segoe UI";
+          ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 18);
+          ctx.font = "500 18px Segoe UI";
+          ctx.fillStyle = "#a7bde8";
+          ctx.fillText(`Final score: ${state.score}`, canvas.width / 2, canvas.height / 2 + 14);
+        }
+
+        if (state.flash > 0) {
+          ctx.fillStyle = `rgba(255, 115, 108, ${state.flash * 1.2})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      function animate(timestamp) {
+        const deltaTime = Math.min((timestamp - (state.lastTime || timestamp)) / 1000, 0.032);
+        state.lastTime = timestamp;
+
+        update(deltaTime);
+        drawBackground();
+        drawPlayer();
+        drawStars();
+        drawOverlay();
+
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") {
+          player.moveLeft = true;
+        }
+
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
+          player.moveRight = true;
+        }
+      });
+
+      window.addEventListener("keyup", (event) => {
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") {
+          player.moveLeft = false;
+        }
+
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
+          player.moveRight = false;
+        }
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * canvas.width;
+        player.x = x - player.width / 2;
+        player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+      });
+
+      startBtn.addEventListener("click", startGame);
+      resetBtn.addEventListener("click", () => {
+        resetState();
+        startBtn.textContent = "Start Game";
+        startBtn.disabled = false;
+      });
+
+      resetState();
+      updateHud();
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>
