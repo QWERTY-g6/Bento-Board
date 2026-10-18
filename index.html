@@ -199,7 +199,7 @@
         await put("days", dayRecord);
       }
       if (!Number.isInteger(dayRecord.gameRewardsUsed) || dayRecord.gameRewardsUsed < 0) {
-        dayRecord.gameRewardsUsed = 0;
+        dayRecord.gameRewardsUsed = dayRecord.sessions || 0;
         await put("days", dayRecord);
       }
       const allTasks = await all("tasks");
