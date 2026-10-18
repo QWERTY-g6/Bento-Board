@@ -25,6 +25,27 @@
     .recommend-panel[hidden]{display:none}
     .calendar-panel{grid-column:1/-1}.calendar-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:22px;margin-top:14px}.calendar-toolbar{display:flex;align-items:center;gap:7px}.calendar-toolbar strong{min-width:130px;text-align:center;font:700 14px var(--display)}.calendar-toolbar button{display:grid;width:29px;height:29px;place-items:center;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);cursor:pointer}.calendar-toolbar .calendar-today{width:auto;padding:0 8px;font-size:10px;font-weight:700}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}.calendar-weekday{padding:4px 0;color:var(--muted);font-size:9px;font-weight:700;text-align:center}.calendar-day{position:relative;display:flex;min-height:43px;align-items:center;justify-content:center;border:1px solid transparent;border-radius:7px;background:#f8f9fc;color:var(--ink);font-size:11px;cursor:pointer}.calendar-day:hover{border-color:#bbc6e7}.calendar-day.is-today{border-color:#9daee1}.calendar-day.is-selected{background:var(--green);color:#fff}.calendar-day.has-due:after{position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--coral);content:""}.calendar-day.is-selected.has-due:after{background:#fff}.calendar-day.empty{visibility:hidden}.calendar-agenda{border-left:1px solid var(--line);padding-left:20px}.calendar-agenda h3{margin:0;font:700 13px var(--display)}.calendar-agenda-list{display:grid;gap:8px;margin-top:10px}.calendar-agenda-task{display:grid;grid-template-columns:16px minmax(0,1fr);gap:8px;align-items:start;font-size:11px}.calendar-agenda-task input{width:14px;height:14px;margin:1px 0 0;accent-color:var(--green);cursor:pointer}.calendar-agenda-task span{overflow-wrap:anywhere}.calendar-agenda-task small{display:block;margin-top:3px;color:var(--muted);font-size:9px}.calendar-empty{margin:11px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.form-row{grid-template-columns:minmax(80px,1fr) 83px 112px 91px auto auto}
     @media(max-width:700px){.calendar-layout{grid-template-columns:1fr;gap:15px}.calendar-agenda{border-top:1px solid var(--line);border-left:0;padding:13px 0 0}.calendar-day{min-height:38px}.calendar-panel>.heading{flex-direction:column;align-items:stretch}.calendar-toolbar{width:100%;justify-content:space-between}.calendar-toolbar strong{min-width:0;flex:1;font-size:12px}.form-row{grid-template-columns:minmax(70px,1fr) 80px}.form-row #task-date{grid-column:1/-1;grid-row:2}.form-row select{grid-column:1;grid-row:3}.form-row .submit{grid-column:2;grid-row:3}.form-row .cancel{grid-column:1/-1;grid-row:4}}
+    .topline-actions{display:flex;align-items:center;gap:14px}.theme-picker{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:10px;font-weight:700}.theme-picker select{height:30px;border:1px solid var(--line);border-radius:7px;background:var(--white);padding:0 8px;color:var(--ink);font-size:10px;cursor:pointer}
+    body[data-theme="blue"]{--paper:#f2f4fb;--ink:#252e45;--muted:#737d94;--green:#405fbd;--line:#e3e7f0;--leaf:#e9edfb;--coral:#e47158;--sun:#f2bd55;--blue:#e4edfc;--white:#fff;--sidebar:#fbfcff;--panel-border:#e7eaf3;--field:#fdfdff;--weather:#eaf0fd;--weather-ink:#35476e;--weather-muted:#64739a;--weather-soft:#dce5fb;--calendar-day:#f8f9fc;--callout:#fffbf2;--callout-border:#f0e7d2}
+    body[data-theme="sage"]{--paper:#f2f7ef;--ink:#28392e;--muted:#718071;--green:#46745b;--line:#dfe9db;--leaf:#e5f0e2;--coral:#d5795d;--sun:#e8bd61;--blue:#e9f0e7;--white:#fff;--sidebar:#f9fcf7;--panel-border:#e1eadd;--field:#fcfefb;--weather:#e9f2e6;--weather-ink:#385845;--weather-muted:#637d68;--weather-soft:#dcebd8;--calendar-day:#f6faf4;--callout:#fbf7eb;--callout-border:#eee2c9}
+    body[data-theme="lavender"]{--paper:#f5f1fa;--ink:#332d43;--muted:#827894;--green:#7655a6;--line:#e8e0f0;--leaf:#eee7f6;--coral:#cf6c78;--sun:#edbd69;--blue:#eee9f8;--white:#fff;--sidebar:#fcfaff;--panel-border:#e9e2f0;--field:#fefcff;--weather:#efe9f8;--weather-ink:#4e3f69;--weather-muted:#77668e;--weather-soft:#e5daf2;--calendar-day:#faf8fc;--callout:#fbf5ee;--callout-border:#f0e5d8}
+    body[data-theme="sunset"]{--paper:#fbf3ec;--ink:#44322a;--muted:#8b7669;--green:#b46743;--line:#efdfd2;--leaf:#f7e8dc;--coral:#c85e53;--sun:#e9b34e;--blue:#f8e9dd;--white:#fff;--sidebar:#fffaf6;--panel-border:#f0e2d8;--field:#fffdfa;--weather:#f8e9dc;--weather-ink:#684734;--weather-muted:#8b6a51;--weather-soft:#f1dcc8;--calendar-day:#fdf8f3;--callout:#fbf4e8;--callout-border:#efdfc5}
+    body[data-theme] .sidebar{background:var(--sidebar)}
+    body[data-theme] .panel{border-color:var(--panel-border)}
+    body[data-theme] .form-row input,body[data-theme] .form-row select,body[data-theme] .weather-form input,body[data-theme] .goal-form input,body[data-theme] .reminder-form input,body[data-theme] .timer-settings-form input{background:var(--field);color:var(--ink)}
+    body[data-theme] .date,body[data-theme] .task-title{color:var(--ink)}
+    body[data-theme] .task.done .task-title,body[data-theme] .task-meta,body[data-theme] .task-footer,body[data-theme] .empty{color:var(--muted)}
+    body[data-theme] .track{background:var(--line)}
+    body[data-theme] .weather{background:var(--weather)}
+    body[data-theme] .weather .kicker,body[data-theme] .weather h2,body[data-theme] .temperature,body[data-theme] .place,body[data-theme] .conditions,body[data-theme] .advice p{color:var(--weather-ink)}
+    body[data-theme] .place,body[data-theme] .units{color:var(--weather-muted)}
+    body[data-theme] .advice-mark{background:var(--weather-soft)}
+    body[data-theme] .calendar-toolbar button{background:var(--white);color:var(--ink)}
+    body[data-theme] .calendar-day{background:var(--calendar-day)}
+    body[data-theme] .calendar-day.is-selected{background:var(--green);color:#fff}
+    body[data-theme] .recommend-panel{border-color:var(--callout-border);background:var(--callout)}
+    body[data-theme] .timer-settings-form{background:var(--white)}
+    @media(max-width:700px){.topline{flex-wrap:wrap;gap:8px}.topline-actions{gap:8px}.theme-picker span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}}
   </style>
   <link rel="stylesheet" href="calendar-icons.css">
 </head>
@@ -40,7 +61,7 @@
   </aside>
 
   <main id="top">
-    <header class="topline"><div><span class="kicker">BENTO BOARD · YOUR DAY, AT A GLANCE</span><p class="date" id="date"></p></div><span class="saved"><i></i>Saved on this device</span></header>
+    <header class="topline"><div><span class="kicker">BENTO BOARD · YOUR DAY, AT A GLANCE</span><p class="date" id="date"></p></div><div class="topline-actions"><label class="theme-picker" for="theme-select"><span>Theme</span><select id="theme-select" aria-label="Choose a color theme"><option value="blue">Blue</option><option value="sage">Sage</option><option value="lavender">Lavender</option><option value="sunset">Sunset</option></select></label><span class="saved"><i></i>Saved on this device</span></div></header>
     <section class="hero"><div><span class="kicker">A LITTLE PROGRESS ADDS UP</span><h1>Make today <span>count.</span></h1><p class="subhead">A clear head starts with a clear plan.</p></div><div class="progress"><div class="progress-line"><span>DAILY PROGRESS</span><strong id="progress-count">0 / 0</strong></div><div class="track" role="progressbar" aria-label="Today's completed tasks" aria-valuemin="0" aria-valuenow="0" aria-valuemax="0"><span id="progress-fill"></span></div></div></section>
 
     <section class="grid" aria-label="Your daily dashboard">
@@ -71,6 +92,8 @@
     const API_URL = "https://api.open-meteo.com/v1/forecast?latitude=42.33&longitude=-83.05&current=temperature_2m";
     const DEFAULT_LOCATION = { name: "Detroit", label: "Detroit, Michigan", latitude: 42.33, longitude: -83.05 };
     const TIMER_SETTINGS_KEY = "bento-board-timer-settings";
+    const THEME_STORAGE_KEY = "bento-board-theme";
+    const THEME_COLORS = { blue: "#f2f4fb", sage: "#f2f7ef", lavender: "#f5f1fa", sunset: "#fbf3ec" };
     const DEFAULT_TIMER_SETTINGS = { focusMinutes: 25, breakMinutes: 5, longBreakMinutes: 15, longBreakEvery: 4 };
     const today = new Date();
     const dateKey = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, "0"), String(today.getDate()).padStart(2, "0")].join("-");
@@ -122,6 +145,19 @@
       toast.style.opacity = "1";
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => { toast.style.opacity = "0"; }, 2300);
+    }
+    function applyTheme(theme, save = false) {
+      if (!Object.prototype.hasOwnProperty.call(THEME_COLORS, theme)) theme = "blue";
+      document.body.dataset.theme = theme;
+      $("theme-select").value = theme;
+      document.querySelector('meta[name="theme-color"]').content = THEME_COLORS[theme];
+      if (save) {
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, theme);
+        } catch {
+          showToast("Theme changed, but couldn't save it on this device.");
+        }
+      }
     }
     function loadTimerSettings() {
       try {
@@ -402,6 +438,7 @@
       }, 1000);
     }
     function bindEvents() {
+      $("theme-select").addEventListener("change", (event) => applyTheme(event.target.value, true));
       $("open-task").addEventListener("click", () => { $("task-date").value = selectedCalendarDate; $("task-form").hidden = false; $("task-input").focus(); });
       $("close-task").addEventListener("click", () => { $("task-form").hidden = true; $("task-form").reset(); });
       $("task-form").addEventListener("submit", async (event) => {
@@ -455,6 +492,13 @@
       $("timer-reset").addEventListener("click", () => { stopTimer(); secondsLeft = timerDuration(timerMode); setTimerText(); });
     }
     async function initialize() {
+      let savedTheme = "blue";
+      try {
+        savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "blue";
+      } catch {
+        showToast("Couldn't load your saved theme preference.");
+      }
+      applyTheme(savedTheme);
       renderDate(); setInterval(renderDate, 60000); renderTimerSettings(); setTimerText(); bindEvents();
       try {
         const savedLocation = JSON.parse(localStorage.getItem("bento-board-weather-location"));
