@@ -47,7 +47,11 @@
     body[data-theme] .timer-settings-form{background:var(--white)}
     @media(max-width:700px){.topline{flex-wrap:wrap;gap:8px}.topline-actions{gap:8px}.theme-picker span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}}
   </style>
-  <link rel="stylesheet" href="calendar-icons.css">
+    </style>
+    <style>
+      .game-reward[hidden],.game-play-area[hidden]{display:none}.game-reward{margin-top:12px;border-color:#e2e7f0;background:#fff}.game-reward .heading{align-items:center}.game-reward h2{margin-top:4px}.game-reward-copy{margin:6px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.game-reward-count{color:var(--green);font-size:10px;font-weight:700}.game-reward-start,.game-close{min-height:32px;border:0;border-radius:6px;padding:0 11px;font-size:10px;font-weight:700;cursor:pointer}.game-reward-start{margin-top:12px;background:var(--green);color:white}.game-close{background:#f0f3f8;color:#59647a}.game-play-area{margin-top:14px}.game-hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:9px}.game-stat{border:1px solid var(--line);border-radius:6px;padding:7px 9px}.game-stat span{display:block;color:var(--muted);font-size:8px;font-weight:700;text-transform:uppercase}.game-stat strong{display:block;margin-top:3px;font:700 15px var(--display);font-variant-numeric:tabular-nums}.game-canvas{display:block;width:100%;height:auto;aspect-ratio:700/360;border:1px solid #dbe2ef;border-radius:7px;background:#101d33;touch-action:none}.game-play-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}.game-status{margin:0;color:var(--muted);font-size:9px;line-height:1.4}.game-help{margin:8px 0 0;color:var(--muted);font-size:9px;line-height:1.45}
+      @media(max-width:700px){.game-hud{grid-template-columns:repeat(2,minmax(0,1fr))}.game-play-footer{align-items:flex-start}}
+    </style>
 </head>
 <body>
   <aside class="sidebar" aria-label="Dashboard navigation">
@@ -81,7 +85,9 @@
 
       <article class="panel focus" id="focus"><div class="heading"><div><span class="kicker">A LITTLE FOCUS GOES FAR</span><h2>Focus session</h2></div><div class="focus-head-tools"><span class="focus-stat"><b id="sessions">0</b> done today</span><details class="settings-popover"><summary aria-label="Focus timer settings" title="Focus timer settings"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="m19.4 15 .1.1 1.1.9-1.1 1.9-1.3-.5a7.7 7.7 0 0 1-1.4.8l-.2 1.4h-2.2l-.3-1.4a7.7 7.7 0 0 1-1.4-.8l-1.3.5-1.1-1.9 1.1-.9a7 7 0 0 1 0-1.6l-1.1-.9 1.1-1.9 1.3.5a7.7 7.7 0 0 1 1.4-.8l.3-1.4h2.2l.2 1.4a7.7 7.7 0 0 1 1.4.8l1.3-.5 1.1 1.9-1.1.9a7 7 0 0 1-.1 1.5Z" transform="translate(-3 -2)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></summary><form class="timer-settings-form" id="timer-settings-form"><label>Focus minutes<input id="focus-minutes" type="number" min="1" max="180" required></label><label>Short break<input id="break-minutes" type="number" min="1" max="60" required></label><label>Long break minutes<input id="long-break-minutes" type="number" min="1" max="90" required></label><label class="wide">Long break every this many focus sessions<input id="long-break-every" type="number" min="2" max="12" required></label><button class="submit" type="submit">Save timer settings</button></form></details></div></div><div class="timer-row"><span class="timer" id="timer" aria-live="off">25:00</span><div class="timer-controls"><button class="timer-start" id="timer-toggle" type="button" aria-label="Start focus timer" title="Start"><svg id="timer-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><button class="timer-reset" id="timer-reset" type="button" aria-label="Reset timer" title="Reset"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11a8 8 0 1 1 2.34 5.66M4 4v7h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div><div class="timer-caption"><span id="timer-caption">Focus · 25 min</span><i></i><span id="break-caption">Short break · 5 min</span></div></article>
     </section>
-    <footer><span>Your plans stay on this device.</span><span>One thing at a time is enough.</span></footer>
+      </section>
+      <article class="panel game-reward" id="game-reward" aria-labelledby="game-title" hidden><div class="heading"><div><span class="kicker">EARNED BREAK</span><h2 id="game-title">Sky Catch</h2><p class="game-reward-copy" id="game-reward-copy">Finish a focus session to unlock a short game break.</p></div><span class="game-reward-count" id="game-reward-count"></span></div><button class="game-reward-start" id="game-reward-start" type="button" hidden>Play 45-second round</button><div class="game-play-area" id="game-play-area" hidden><div class="game-hud" aria-live="polite"><div class="game-stat"><span>Score</span><strong id="game-score">0</strong></div><div class="game-stat"><span>Best</span><strong id="game-best">0</strong></div><div class="game-stat"><span>Seconds</span><strong id="game-time">45</strong></div><div class="game-stat"><span>Lives</span><strong id="game-lives">3</strong></div></div><canvas class="game-canvas" id="game-canvas" width="700" height="360" aria-label="Sky Catch game area"></canvas><div class="game-play-footer"><p class="game-status" id="game-status" aria-live="polite">Catch stars and avoid meteors.</p><button class="game-close" id="game-close" type="button">Finish break</button></div><p class="game-help">Use A/D, arrow keys, or move your pointer to catch stars.</p></div></article>
+      <footer><span>Your plans stay on this device.</span><span>One thing at a time is enough.</span></footer>
   </main>
   <div id="toast" role="status" aria-live="polite" style="position:fixed;right:18px;bottom:18px;z-index:5;border:1px solid #dce7dc;border-radius:7px;background:white;padding:10px 14px;color:#3f5947;font-size:12px;box-shadow:0 5px 20px #23342612;opacity:0;pointer-events:none;transition:opacity .18s"></div>
 
@@ -112,6 +118,7 @@
     let toastTimer;
     let selectedLocation = DEFAULT_LOCATION;
     let weatherRequestId = 0;
+    let gameRewardOpen = false;
 
     function transaction(store, mode, action) {
       return new Promise((resolve, reject) => {
@@ -188,7 +195,11 @@
     async function loadData() {
       dayRecord = await get("days", dateKey);
       if (!dayRecord) {
-        dayRecord = { date: dateKey, goal: "Make a little progress on something that matters.", goalDone: false, sessions: 0 };
+        dayRecord = { date: dateKey, goal: "Make a little progress on something that matters.", goalDone: false, sessions: 0, gameRewardsUsed: 0 };
+        await put("days", dayRecord);
+      }
+      if (!Number.isInteger(dayRecord.gameRewardsUsed) || dayRecord.gameRewardsUsed < 0) {
+        dayRecord.gameRewardsUsed = 0;
         await put("days", dayRecord);
       }
       const allTasks = await all("tasks");
@@ -203,7 +214,7 @@
       reminders = storedReminders.filter((reminder) => !reminder.done);
       renderAll();
     }
-    function renderAll() { renderTasks(); renderCalendar(); renderGoal(); renderReminders(); renderSessions(); renderRecommendation(); }
+    function renderAll() { renderTasks(); renderCalendar(); renderGoal(); renderReminders(); renderSessions(); renderRecommendation(); renderGameReward(); }
     function renderCalendar() {
       const monthLabel = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(calendarMonth);
       $("calendar-month").textContent = monthLabel;
@@ -321,6 +332,121 @@
       $("reminder-empty").hidden = reminders.length > 0;
     }
     function renderSessions() { $("sessions").textContent = String(dayRecord.sessions || 0); }
+    function renderGameReward() {
+      const available = Math.max(0, (dayRecord?.sessions || 0) - (dayRecord?.gameRewardsUsed || 0));
+      $("game-reward").hidden = available === 0 && !gameRewardOpen;
+      $("game-reward-count").textContent = gameRewardOpen ? "Round in progress" : available ? `${available} round${available === 1 ? "" : "s"} ready` : "";
+      $("game-reward-copy").textContent = gameRewardOpen ? "A short reset, earned with your focus." : "Your focus session earned you a short game break.";
+      $("game-reward-start").hidden = gameRewardOpen || available === 0;
+      $("game-play-area").hidden = !gameRewardOpen;
+    }
+    const rewardCanvas = $("game-canvas");
+    const rewardContext = rewardCanvas.getContext("2d");
+    const rewardPlayer = { x: 295, y: 326, width: 110, height: 14, speed: 390, left: false, right: false };
+    const rewardGame = { running: false, score: 0, best: 0, time: 45, lives: 3, spawn: 0, items: [], last: 0 };
+    try { rewardGame.best = Number(localStorage.getItem("sky-catch-best")) || 0; } catch { /* Keep the best score in memory if storage is unavailable. */ }
+    function renderRewardHud() {
+      $("game-score").textContent = String(rewardGame.score);
+      $("game-best").textContent = String(rewardGame.best);
+      $("game-time").textContent = String(Math.ceil(rewardGame.time));
+      $("game-lives").textContent = String(rewardGame.lives);
+    }
+    function drawRewardGame() {
+      const ctx = rewardContext;
+      const width = rewardCanvas.width;
+      const height = rewardCanvas.height;
+      const sky = ctx.createLinearGradient(0, 0, 0, height);
+      sky.addColorStop(0, "#172a47");
+      sky.addColorStop(1, "#101827");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, width, height);
+      for (let index = 0; index < 52; index += 1) {
+        ctx.fillStyle = "rgba(255,255,255,0.58)";
+        ctx.fillRect((index * 53) % width, (index * 71) % height, 2, 2);
+      }
+      for (const item of rewardGame.items) {
+        ctx.beginPath();
+        ctx.fillStyle = item.meteor ? "#e47158" : "#f2bd55";
+        if (item.meteor) {
+          ctx.moveTo(item.x, item.y - item.radius);
+          ctx.lineTo(item.x + item.radius * 0.8, item.y);
+          ctx.lineTo(item.x, item.y + item.radius);
+          ctx.lineTo(item.x - item.radius * 0.8, item.y);
+          ctx.closePath();
+        } else ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = "#b8c8f0";
+      ctx.fillRect(rewardPlayer.x, rewardPlayer.y, rewardPlayer.width, rewardPlayer.height);
+      ctx.fillStyle = "#e5ebff";
+      ctx.beginPath();
+      ctx.moveTo(rewardPlayer.x + 19, rewardPlayer.y);
+      ctx.lineTo(rewardPlayer.x + rewardPlayer.width / 2, rewardPlayer.y - 13);
+      ctx.lineTo(rewardPlayer.x + rewardPlayer.width - 19, rewardPlayer.y);
+      ctx.fill();
+      if (!rewardGame.running) {
+        ctx.fillStyle = "rgba(10,18,32,0.52)";
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.font = "700 26px Manrope, sans-serif";
+        ctx.fillText("Break complete", width / 2, height / 2 - 6);
+        ctx.fillStyle = "#d2daf0";
+        ctx.font = "500 15px 'DM Sans', sans-serif";
+        ctx.fillText(`Stars caught: ${rewardGame.score}`, width / 2, height / 2 + 21);
+      }
+    }
+    function finishRewardRound(message) {
+      rewardGame.running = false;
+      rewardGame.best = Math.max(rewardGame.best, rewardGame.score);
+      try { localStorage.setItem("sky-catch-best", String(rewardGame.best)); } catch { /* Best score remains available for this visit. */ }
+      renderRewardHud();
+      $("game-status").textContent = message;
+      drawRewardGame();
+    }
+    function rewardGameFrame(timestamp) {
+      if (!rewardGame.running) return;
+      const delta = Math.min((timestamp - (rewardGame.last || timestamp)) / 1000, 0.04);
+      rewardGame.last = timestamp;
+      rewardGame.time -= delta;
+      const direction = (rewardPlayer.right ? 1 : 0) - (rewardPlayer.left ? 1 : 0);
+      rewardPlayer.x = Math.max(0, Math.min(rewardCanvas.width - rewardPlayer.width, rewardPlayer.x + direction * rewardPlayer.speed * delta));
+      rewardGame.spawn -= delta;
+      if (rewardGame.spawn <= 0) {
+        const meteor = Math.random() < 0.3;
+        rewardGame.items.push({ x: 18 + Math.random() * (rewardCanvas.width - 36), y: -16, radius: meteor ? 13 : 11, speed: meteor ? 185 : 165, drift: (Math.random() - 0.5) * 90, meteor });
+        rewardGame.spawn = Math.max(0.38, 0.9 - rewardGame.score / 300);
+      }
+      rewardGame.items = rewardGame.items.filter((item) => {
+        item.y += item.speed * delta;
+        item.x += item.drift * delta;
+        const hit = item.x + item.radius >= rewardPlayer.x && item.x - item.radius <= rewardPlayer.x + rewardPlayer.width && item.y + item.radius >= rewardPlayer.y && item.y - item.radius <= rewardPlayer.y + rewardPlayer.height;
+        if (hit && item.meteor) rewardGame.lives -= 1;
+        else if (hit) rewardGame.score += 10;
+        return !hit && item.y < rewardCanvas.height + item.radius;
+      });
+      renderRewardHud();
+      if (rewardGame.lives <= 0 || rewardGame.time <= 0) {
+        rewardGame.time = Math.max(0, rewardGame.time);
+        finishRewardRound("Break complete. Nice work!");
+        return;
+      }
+      drawRewardGame();
+      requestAnimationFrame(rewardGameFrame);
+    }
+    function startRewardRound() {
+      rewardGame.running = true;
+      rewardGame.score = 0;
+      rewardGame.time = 45;
+      rewardGame.lives = 3;
+      rewardGame.spawn = 0;
+      rewardGame.items = [];
+      rewardGame.last = 0;
+      rewardPlayer.x = (rewardCanvas.width - rewardPlayer.width) / 2;
+      $("game-status").textContent = "Catch stars and avoid meteors.";
+      renderRewardHud();
+      requestAnimationFrame(rewardGameFrame);
+    }
     function renderRecommendation() {
       const remaining = tasks.filter((task) => !task.done);
       const panel = $("recommendation-panel");
@@ -423,7 +549,7 @@
           stopTimer();
           if (timerMode === "focus") {
             dayRecord.sessions = (dayRecord.sessions || 0) + 1;
-            await put("days", dayRecord); renderSessions();
+            await put("days", dayRecord); renderSessions(); renderGameReward();
             const isLongBreak = dayRecord.sessions % timerSettings.longBreakEvery === 0;
             timerMode = isLongBreak ? "longBreak" : "shortBreak";
             secondsLeft = timerDuration(timerMode);
@@ -490,6 +616,29 @@
       });
       $("timer-toggle").addEventListener("click", toggleTimer);
       $("timer-reset").addEventListener("click", () => { stopTimer(); secondsLeft = timerDuration(timerMode); setTimerText(); });
+      $("game-reward-start").addEventListener("click", async () => {
+        if (!dayRecord || (dayRecord.sessions || 0) <= (dayRecord.gameRewardsUsed || 0)) return;
+        dayRecord.gameRewardsUsed = (dayRecord.gameRewardsUsed || 0) + 1;
+        await put("days", dayRecord);
+        gameRewardOpen = true;
+        renderGameReward();
+        startRewardRound();
+      });
+      $("game-close").addEventListener("click", () => { rewardGame.running = false; gameRewardOpen = false; renderGameReward(); });
+      window.addEventListener("keydown", (event) => {
+        if (!rewardGame.running) return;
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") { rewardPlayer.left = true; event.preventDefault(); }
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") { rewardPlayer.right = true; event.preventDefault(); }
+      });
+      window.addEventListener("keyup", (event) => {
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") rewardPlayer.left = false;
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") rewardPlayer.right = false;
+      });
+      rewardCanvas.addEventListener("pointermove", (event) => {
+        if (!rewardGame.running) return;
+        const rect = rewardCanvas.getBoundingClientRect();
+        rewardPlayer.x = Math.max(0, Math.min(rewardCanvas.width - rewardPlayer.width, ((event.clientX - rect.left) / rect.width) * rewardCanvas.width - rewardPlayer.width / 2));
+      });
     }
     async function initialize() {
       let savedTheme = "blue";
