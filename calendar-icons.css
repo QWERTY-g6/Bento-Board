@@ -1,0 +1,16 @@
+.calendar-day-number{position:relative;z-index:1}
+.calendar-day-icon{position:absolute;top:2px;right:3px;font-size:10px;line-height:1}
+.calendar-day.has-icons{padding-top:7px}
+.calendar-day.is-selected .calendar-day-icon{filter:drop-shadow(0 1px 1px #0004)}
+.calendar-icon-picker{margin-top:13px;border-top:1px solid var(--line);padding-top:11px}
+.calendar-icon-picker h4{margin:0;color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.calendar-icon-options{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.calendar-icon-choice{display:grid;width:34px;height:34px;place-items:center;border:1px solid var(--line);border-radius:7px;background:#fff;font-size:17px;cursor:pointer}
+.calendar-icon-choice:hover,.calendar-icon-choice[aria-pressed="true"]{border-color:var(--green);background:var(--leaf)}
+.calendar-icon-choice[aria-pressed="true"]{box-shadow:inset 0 0 0 1px var(--green)}
+.calendar-icon-choice:focus-visible{outline:3px solid #88b29a;outline-offset:2px}
+.calendar-icon-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.calendar-icon-entry{display:flex;align-items:center;gap:4px;border-radius:5px;background:#f5f6fa;padding:4px 6px;font-size:10px}
+.calendar-icon-remove{display:grid;width:17px;height:17px;place-items:center;border:0;border-radius:4px;background:transparent;color:var(--muted);font-size:13px;cursor:pointer}
+.calendar-icon-remove:hover{background:#e9ebf2;color:var(--ink)}
+@media(max-width:700px){.calendar-day-icon{top:1px;right:2px;font-size:9px}.calendar-icon-choice{width:36px;height:36px}}

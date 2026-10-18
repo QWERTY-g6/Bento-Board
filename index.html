@@ -26,6 +26,7 @@
     .calendar-panel{grid-column:1/-1}.calendar-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:22px;margin-top:14px}.calendar-toolbar{display:flex;align-items:center;gap:7px}.calendar-toolbar strong{min-width:130px;text-align:center;font:700 14px var(--display)}.calendar-toolbar button{display:grid;width:29px;height:29px;place-items:center;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);cursor:pointer}.calendar-toolbar .calendar-today{width:auto;padding:0 8px;font-size:10px;font-weight:700}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}.calendar-weekday{padding:4px 0;color:var(--muted);font-size:9px;font-weight:700;text-align:center}.calendar-day{position:relative;display:flex;min-height:43px;align-items:center;justify-content:center;border:1px solid transparent;border-radius:7px;background:#f8f9fc;color:var(--ink);font-size:11px;cursor:pointer}.calendar-day:hover{border-color:#bbc6e7}.calendar-day.is-today{border-color:#9daee1}.calendar-day.is-selected{background:var(--green);color:#fff}.calendar-day.has-due:after{position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--coral);content:""}.calendar-day.is-selected.has-due:after{background:#fff}.calendar-day.empty{visibility:hidden}.calendar-agenda{border-left:1px solid var(--line);padding-left:20px}.calendar-agenda h3{margin:0;font:700 13px var(--display)}.calendar-agenda-list{display:grid;gap:8px;margin-top:10px}.calendar-agenda-task{display:grid;grid-template-columns:16px minmax(0,1fr);gap:8px;align-items:start;font-size:11px}.calendar-agenda-task input{width:14px;height:14px;margin:1px 0 0;accent-color:var(--green);cursor:pointer}.calendar-agenda-task span{overflow-wrap:anywhere}.calendar-agenda-task small{display:block;margin-top:3px;color:var(--muted);font-size:9px}.calendar-empty{margin:11px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.form-row{grid-template-columns:minmax(80px,1fr) 83px 112px 91px auto auto}
     @media(max-width:700px){.calendar-layout{grid-template-columns:1fr;gap:15px}.calendar-agenda{border-top:1px solid var(--line);border-left:0;padding:13px 0 0}.calendar-day{min-height:38px}.calendar-panel>.heading{flex-direction:column;align-items:stretch}.calendar-toolbar{width:100%;justify-content:space-between}.calendar-toolbar strong{min-width:0;flex:1;font-size:12px}.form-row{grid-template-columns:minmax(70px,1fr) 80px}.form-row #task-date{grid-column:1/-1;grid-row:2}.form-row select{grid-column:1;grid-row:3}.form-row .submit{grid-column:2;grid-row:3}.form-row .cancel{grid-column:1/-1;grid-row:4}}
   </style>
+  <link rel="stylesheet" href="calendar-icons.css">
 </head>
 <body>
   <aside class="sidebar" aria-label="Dashboard navigation">
@@ -63,6 +64,7 @@
   </main>
   <div id="toast" role="status" aria-live="polite" style="position:fixed;right:18px;bottom:18px;z-index:5;border:1px solid #dce7dc;border-radius:7px;background:white;padding:10px 14px;color:#3f5947;font-size:12px;box-shadow:0 5px 20px #23342612;opacity:0;pointer-events:none;transition:opacity .18s"></div>
 
+  <script src="calendar-icons.js"></script>
   <script>
     "use strict";
     const DB_NAME = "daybook-student-dashboard";
@@ -193,10 +195,14 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = `calendar-day${key === dateKey ? " is-today" : ""}${key === selectedCalendarDate ? " is-selected" : ""}${dueTasks.length ? " has-due" : ""}`;
-        button.textContent = String(day);
+        const dayNumber = document.createElement("span");
+        dayNumber.className = "calendar-day-number";
+        dayNumber.textContent = String(day);
+        button.append(dayNumber);
         button.setAttribute("role", "gridcell");
         button.setAttribute("aria-label", `${new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), day))}${dueTasks.length ? `, ${dueTasks.length} task${dueTasks.length === 1 ? "" : "s"} due` : ", no tasks due"}`);
         button.setAttribute("aria-pressed", String(key === selectedCalendarDate));
+        window.CalendarIcons.renderCell(button, key);
         button.addEventListener("click", () => { selectedCalendarDate = key; renderCalendar(); });
         grid.append(button);
       }
@@ -224,6 +230,7 @@
         agenda.append(row);
       }
       $("calendar-empty").hidden = dueTasks.length > 0;
+      window.CalendarIcons.renderPicker(selectedCalendarDate);
     }
     function renderTasks() {
       const list = $("task-list");
